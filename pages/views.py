@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from django.db.models import Sum
 import json
 import pickle
+import random
 
 max_ts_diff = 5
 
@@ -171,4 +172,31 @@ def log_temp_hum_mot(request, temp, hum, mot):
         'humidity': hum,
         'motion': mot,
     }
+    return JsonResponse(args)
+
+def enviro_dashboard(request):
+    args = {}
+    return render(request, 'pages/enviro-dashboard.html', args)
+
+def enviro_lattest_data(request):
+    args = {
+        'ts': 0,
+        'temp': 0,
+        'humidity': 0,
+        'motion': False,
+    }
+
+    last_log = EnvironmentalDataLog.objects.order_by('-pk')[0]
+    last_ts = last_log.ts
+    current_ts = int(time())
+
+    args['ts'] = last_log.ts
+    args['temp'] = last_log.temp
+    args['humidity'] = last_log.humidity
+    args['motion'] = last_log.motion
+
+    # args['temp'] = random.randint(0,100)
+    # args['humidity'] = random.randint(0,100)
+    # args['motion'] = random.choice([False, True])
+
     return JsonResponse(args)
