@@ -195,8 +195,8 @@ def enviro_lattest_data(request):
     args['humidity'] = last_log.humidity
     args['motion'] = last_log.motion
 
-    # args['temp'] = random.randint(0,100)
-    # args['humidity'] = random.randint(0,100)
-    # args['motion'] = random.choice([False, True])
+    args['temp'] = random.randint(0,100)
+    args['humidity'] = random.randint(0,100)
+    args['motion'] = random.choice([False, True])
 
     return JsonResponse(args)

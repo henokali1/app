@@ -164,7 +164,10 @@ a {
   <div class="gauge-container">
     <div class="gauge"></div>
     <div class="humidity"></div>
-    <div class="motion"></div>
+    <div class="motion">
+        <img id="motion-img" src="https://i.ibb.co/QHJ0868/no-motion-removebg-preview.png" border="0">
+        <!-- <img src="https://i.ibb.co/v4b9DNH/ezgif-com-gif-maker.gif" alt="ezgif-com-gif-maker" border="0"> -->
+    </div>
   </div>
 </main>
 
@@ -285,18 +288,6 @@ a {
             humidity.init();
         });
 
-        $('.motion').each(function (index, item) {
-            let params = {
-            initialValue: 0,
-            higherValue: 100,
-            title: `motion`,
-            subtitle: '0 %' };
-
-
-            let motion = new GaugeChart(item, params);
-            motion.init();
-        });
-
         $('#random').click(function () {
             $('.gauge').each(function (index, item) {
             let gauge = $(item).dxCircularGauge('instance');
@@ -315,15 +306,6 @@ a {
             gaugeElement.find('.dxg-title text').last().html(`${randomNum} %`);
             gauge.value(randomNum);
             });
-
-            $('.motion').each(function (index, item) {
-            let gauge = $(item).dxCircularGauge('instance');
-            let randomNum = Math.round(Math.random() * 100);
-            let gaugeElement = $(gauge._$element[0]);
-
-            gaugeElement.find('.dxg-title text').last().html(`${randomNum} %`);
-            gauge.value(randomNum);
-            });
         });
         });
 
@@ -334,30 +316,40 @@ a {
     lattest_data_url = '/enviro-lattest-data'
     function executeQuery() {
       $.getJSON( lattest_data_url, function(data) {
-              console.log(data);
-              ts = data['ts']
-              temp = data['temp']
-              humidity = data['humidity']
-              motion = data['motion']
+          console.log(data);
+          ts = data['ts']
+          temp = data['temp']
+          humidity = data['humidity']
+          motion = data['motion']
+
+          
+          mot_img = document.getElementById('motion-img');
+          if(motion === true){
+            mot_img.src = 'https://i.ibb.co/v4b9DNH/ezgif-com-gif-maker.gif';
+          } 
+          else {
+            mot_img.src = 'https://i.ibb.co/QHJ0868/no-motion-removebg-preview.png';
+          }
+
+          
+          $('.gauge').each(function (index, item) {
+            let gauge = $(item).dxCircularGauge('instance');
+            let gaugeElement = $(gauge._$element[0]);
             
-              $('.gauge').each(function (index, item) {
-                let gauge = $(item).dxCircularGauge('instance');
-                let gaugeElement = $(gauge._$element[0]);
-
-                gaugeElement.find('.dxg-title text').last().html(`${temp} ºC`);
-                gauge.value(temp);
-                });
-
+            gaugeElement.find('.dxg-title text').last().html(`${temp} ºC`);
+            gauge.value(temp);
+            });
+            
             $('.humidity').each(function (index, item) {
-                let humidity_gauge = $(item).dxCircularGauge('instance');
-                let gaugeElement = $(humidity_gauge._$element[0]);
+            let humidity_gauge = $(item).dxCircularGauge('instance');
+            let gaugeElement = $(humidity_gauge._$element[0]);
 
-                gaugeElement.find('.dxg-title text').last().html(`${humidity} %`);
-                humidity_gauge.value(humidity);
-                });
+            gaugeElement.find('.dxg-title text').last().html(`${humidity} %`);
+            humidity_gauge.value(humidity);
+            });
           })
           .fail(function() {
-              console.log( "error" );
+          console.log( "error" );
           });
       setTimeout(executeQuery, 1000); // you could choose not to continue on failure...
   }
