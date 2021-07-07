@@ -191,8 +191,8 @@ def enviro_lattest_data(request):
     current_ts = int(time())
 
     args['ts'] = last_log.ts
-    args['temp'] = last_log.temp
-    args['humidity'] = last_log.humidity
+    args['temp'] = int(last_log.temp)
+    args['humidity'] = int(last_log.humidity)
     args['motion'] = last_log.motion
 
     # args['temp'] = random.randint(0,100)

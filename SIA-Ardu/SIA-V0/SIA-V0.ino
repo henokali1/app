@@ -18,7 +18,7 @@ IPAddress server(3,137,144,214);
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 
-const unsigned long postingInterval = 10*1000;  // delay between updates, in milliseconds
+const unsigned long postingInterval = 5*1000;  // delay between updates, in milliseconds
 
 
 int PIR_PIN = 7;
@@ -146,12 +146,7 @@ void httpRequest() {
   }
 }
 
-void loop(){
-  // Update motion sensor data
-  readMotion();
-  // Update temp and humidity data
-  readDht(); 
-  
+void loop(){  
   // if there's incoming data from the net connection. send it out the serial port.  This is for debugging purposes only:
   if (client.available()) {
     char c = client.read();
@@ -160,6 +155,10 @@ void loop(){
 
   // if ten seconds have passed since your last connection, then connect again and send data:
   if (millis() - lastConnectionTime > postingInterval) {
+    // Update motion sensor data
+    readMotion();
+    // Update temp and humidity data
+    readDht(); 
     httpRequest();
   }
 }
