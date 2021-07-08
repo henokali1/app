@@ -12,4 +12,5 @@ urlpatterns = [
     path('log-temp-hum-mot/<str:temp>/<str:hum>/<str:mot>/', views.log_temp_hum_mot),
     path('enviro-dashboard/', views.enviro_dashboard, name='enviro-dashboard.html'),
     path('enviro-lattest-data/', views.enviro_lattest_data),
+    path('enviro-hist-chart/<str:d>/', views.enviro_his_data, name='enviro-hist-chart.html'),
 ]

@@ -200,3 +200,35 @@ def enviro_lattest_data(request):
     # args['motion'] = random.choice([False, True])
 
     return JsonResponse(args)
+
+def enviro_his_data(request, d=''):
+    print(d)
+    if(d == 'd={}'):
+        logs = EnvironmentalDataLog.objects.all().order_by('-pk')[0:60]
+        start = logs[len(logs)-1].ts*1000
+        end = logs[0].ts*1000
+    else: 
+        data = ast.literal_eval(d)
+        start = data['start_timestamp']*1000
+        end = data['end_timestamp']*1000
+        # print('........')
+        # print('end: ', end)
+        # end += timedelta(days=1)
+        # print('incrimented: ', end)
+        # print('........')
+        print('start : ', start)
+        print('end: ', end)
+        logs = EnvironmentalDataLog.objects.filter(ts__gte=start, ts__lte=end)
+        
+        # start = str(start.strftime('%m-%d-%Y')).split(' ')[0]
+        # end += timedelta(days=-1)
+        # end = str(end.strftime('%m-%d-%Y')).split(' ')[0]
+        
+
+
+    args = {
+        'logs': logs,
+        'start': start,
+        'end': end,
+    }
+    return render(request, 'pages/enviro-hist-chart.html', args)
