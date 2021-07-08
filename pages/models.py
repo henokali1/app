@@ -21,3 +21,10 @@ class EnvironmentalDataLog(models.Model):
 
     def __str__(self):
         return f'{self.ts} - Temp: {self.temp} - Humidity: {self.humidity} - Motion: {self.motion}'
+
+class RaspberryPiIp(models.Model):
+    date = models.DateTimeField(default=datetime.now)
+    ip = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f'IP: {self.ip} - Date: {self.date}'
